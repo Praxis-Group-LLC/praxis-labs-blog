@@ -1,11 +1,21 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const posts = Object.entries(
+	import.meta.glob('../blog/*.mdx', { eager: true })
+).map(([path, module]) => ({
+	slug: path.split('/').pop()?.replace(/\.mdx$/, ''),
+	title: module.frontmatter.title
+}));
 ---
 
 <Layout>
-	<Welcome />
+	<main>
+		<h1>Blog</h1>
+		<ul>
+			{posts.map((post) => (
+				<li><a href={`/posts/${post.slug}`}>{post.title}</a></li>
+			))}
+		</ul>
+	</main>
 </Layout>

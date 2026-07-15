@@ -1,0 +1,16 @@
+---
+title: How I Built a Distributed .NET Agent Platform for 2,000+ Windows Servers
+---
+
+# How I Built a Distributed .NET Agent Platform for 2,000+ Windows Servers
+
+## Example architecture
+
+This diagram shows the basic relationship between the control plane, agents, and the servers they manage:
+
+```mermaid
+flowchart LR
+    ControlPlane[Control Plane] -->|Dispatches jobs| Agent[Windows Agent]
+    Agent -->|Runs tasks| Servers[Managed Windows Servers]
+    Agent -->|Reports results| ControlPlane
+```

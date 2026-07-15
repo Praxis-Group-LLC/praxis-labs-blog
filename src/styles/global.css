@@ -30,7 +30,8 @@
 
 @layer components {
 	.page-shell main { box-sizing: border-box; width: min(calc(100% - (var(--content-gutter) * 2)), var(--content-max-width)); margin: 0 auto; padding: 5rem 0 6rem; }
-	.post h1 { margin-top: 0; color: #a78bfa; font-size: clamp(2.4rem, 6vw, 4.5rem); line-height: 1; letter-spacing: -.055em; }
+	.page-title, .post h1 { font-size: clamp(3rem, 6vw, 4.5rem); line-height: 1; letter-spacing: -.055em; }
+	.post h1 { margin-top: 0; color: #a78bfa; }
 	.post h2 { margin-top: 2.5rem; color: #b8a2ff; }
 	.post p, .post li { color: var(--muted); font-size: 1.08rem; line-height: 1.75; }
 	.post ul, .post ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--muted); }

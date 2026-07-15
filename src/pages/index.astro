@@ -11,10 +11,18 @@ const posts = Object.entries(
 
 <Layout>
 	<main>
-		<h1>Blog</h1>
-		<ul>
+		<p class="text-xs font-extrabold tracking-[.16em] text-[#b8a2ff]">PRAXIS LABS / FIELD NOTES</p>
+		<h1 class="my-6 max-w-[45rem] text-[clamp(3rem,9vw,6.5rem)] leading-[.94] tracking-[-.07em] text-[var(--ink)]">Ideas for building<br /><span class="text-[#a78bfa]">better systems.</span></h1>
+		<p class="mb-16 max-w-[34rem] text-[1.15rem] leading-relaxed text-[var(--muted)]">Notes on distributed systems, automation, and the people who make complex technology useful.</p>
+		<ul class="grid list-none gap-[.85rem] p-0">
 			{posts.map((post) => (
-				<li><a href={`/posts/${post.slug}`}>{post.title}</a></li>
+				<li>
+					<a class="grid grid-cols-[3rem_1fr_auto] items-center gap-4 rounded-2xl border border-white/20 bg-white/[.07] p-[1.4rem] text-[var(--ink)] no-underline shadow-[0_.75rem_2rem_rgba(0,0,0,.22)] backdrop-blur-xl backdrop-saturate-[115%] transition duration-200 hover:-translate-y-[3px] hover:border-white/[.38] hover:bg-white/[.13]" href={`/posts/${post.slug}`}>
+						<span class="text-sm font-extrabold text-[#b8a2ff]">01</span>
+						<span class="text-[clamp(1.05rem,2.5vw,1.4rem)] leading-[1.25]">{post.title}</span>
+						<span class="text-2xl text-[#b8a2ff]">↗</span>
+					</a>
+				</li>
 			))}
 		</ul>
 	</main>

@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@layer base {
+	:root {
+		--ink: #f5f0ff;
+		--muted: #c9bee7;
+		--surface: rgba(255, 255, 255, .07);
+		--line: rgba(255, 255, 255, .18);
+		--content-max-width: 90rem;
+		--content-gutter: 2rem;
+	}
+
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		min-height: 100%;
+	}
+
+	body {
+		color: var(--ink);
+		font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+		background: radial-gradient(circle at 15% 10%, rgba(139, 92, 246, .22), transparent 28rem), radial-gradient(circle at 90% 90%, rgba(109, 40, 217, .16), transparent 32rem), #0b0910;
+		background-attachment: fixed;
+	}
+
+	body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .34; background-image: url("data:image/svg+xml,%3Csvg width='100' height='87' viewBox='0 0 100 87' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 .5h50L99.5 43.5 75 86.5H25L.5 43.5z' fill='none' stroke='%23a78bfa' stroke-width='1'/%3E%3C/svg%3E"); background-size: 100px 87px; }
+	a { color: #b8a2ff; font-weight: 700; }
+	a:hover { color: #d8ccff; }
+}
+
+@layer components {
+	.page-shell main { box-sizing: border-box; width: min(calc(100% - (var(--content-gutter) * 2)), var(--content-max-width)); margin: 0 auto; padding: 5rem 0 6rem; }
+	.post h1 { margin-top: 0; color: #a78bfa; font-size: clamp(2.4rem, 6vw, 4.5rem); line-height: 1; letter-spacing: -.055em; }
+	.post h2 { margin-top: 2.5rem; color: #b8a2ff; }
+	.post p, .post li { color: var(--muted); font-size: 1.08rem; line-height: 1.75; }
+	.post ul, .post ol { margin: 1rem 0; padding-left: 1.5rem; color: var(--muted); }
+	.post ul { list-style: disc; }
+	.post ol { list-style: decimal; }
+	.post li { margin: .4rem 0; }
+	.post pre { overflow-x: auto; padding: 1rem; border-radius: .75rem; background: rgba(0, 0, 0, .35); color: #f5f0ff; }
+	.post .mermaid { overflow-x: auto; margin: 2rem 0; padding: 1rem; border: 1px solid rgba(255, 255, 255, .14); border-radius: .75rem; background: rgba(255, 255, 255, .04); }
+	.post .mermaid svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+}
+
+@media (max-width: 600px) {
+	:root { --content-gutter: 1rem; }
+	.page-shell main { padding: 3rem 0 4rem; }
+}

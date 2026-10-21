@@ -4,6 +4,9 @@ import Layout from '../../layouts/Layout.astro';
 <Layout title="Pathway — Architecture | Conor Brown" description="Architecture and engineering decisions behind Pathway, a full-stack technical education platform.">
 <main class="article"><p class="eyebrow">Project walkthrough · Full-stack architecture</p><h1>Pathway</h1><p class="lead">Pathway is a full-stack platform for practical technical education, with a React learning interface, a .NET API, authentication, persistent progress, and isolated evaluation of learner code.</p>
 <div class="actions"><a class="button primary" href="https://pathway.orangecastle.net">Try Pathway ↗</a><a class="button" href="https://github.com/conorbrown-dev/pathway">Inspect source ↗</a><a class="button" href="/projects">All projects</a></div>
+<h2>Product screenshot</h2>
+<figure class="project-capture" hidden><img src="/projects/pathway-overview.png" alt="Actual screenshot of the public Pathway software learning interface" loading="lazy" onload="this.parentElement.hidden=false" onerror="this.parentElement.remove()" /><figcaption>Captured from the public Pathway application using a clean browser session.</figcaption></figure>
+<p>Explore the <a href="https://pathway.orangecastle.net">live site</a>; the screenshot is displayed when the verified public-page capture is available.</p>
 <h2>The engineering challenge</h2><p>Teaching programming requires more than displaying lesson content. A learner needs structured progression, useful feedback, stateful progress tracking, and a way to evaluate code without handing arbitrary execution to the public-facing application server.</p>
 <h2>Actual technology and boundaries</h2><ul>
 <li>Frontend: React 19, TypeScript, Vite and Tailwind CSS 4.</li>
@@ -24,7 +27,7 @@ B --> S[Isolated per-submission sandbox]
 <h2>Curriculum as structured content</h2><p>Typed, versioned lesson records carry explanatory content, examples, exercises and progression metadata. This makes the lesson engine reusable across course subjects and supports future changes to how content is authored and stored.</p>
 <h2>Quality and operational approach</h2><p>The repository documents Playwright smoke coverage for a guest learner loading and interacting with lessons, as well as deployment runbooks and staging checks. These statements describe documented design and tests, not independently measured availability or adoption.</p>
 <p><a href="https://github.com/conorbrown-dev/pathway/blob/main/README.md">Read the project's architecture and setup documentation ↗</a></p>
-</main></Layout>
+</main><style>.project-capture{margin:1.5rem 0}.project-capture img{display:block;width:100%;max-width:100%;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.2)}.project-capture figcaption{font-size:.85rem;opacity:.8;margin-top:.5rem}</style></Layout>
 <script>
 import mermaid from 'mermaid';
 mermaid.initialize({ startOnLoad: false, theme: 'dark', flowchart: { useMaxWidth: true, htmlLabels: false } });

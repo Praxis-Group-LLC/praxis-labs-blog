@@ -29,6 +29,7 @@ jobs:
         run: |
           npm run build
           node scripts/generate-resume-pdf.mjs
+          node scripts/audit-site.mjs
       - name: Publish PDF as workflow artifact
         uses: actions/upload-artifact@v4
         with:

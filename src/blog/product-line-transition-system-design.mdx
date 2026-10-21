@@ -1,0 +1,54 @@
+---
+title: "Engineering a Product-Line Transition Across Data, Pricing, and Operations"
+description: "Why a new product generation is a system-wide migration, not a single catalog update."
+---
+# Engineering a Product-Line Transition Across Data, Pricing, and Operations
+
+Shipping a new generation of a configurable product can look straightforward from the outside: add new SKUs and retire the old ones. In a mature enterprise application, the transition crosses the product model, price calculations, configuration, drawings, search, and internal administration.
+
+During 2025–2026 I worked across those boundaries on a substantial product-line transition. This account deliberately generalizes product and company identifiers, leaves out commercially sensitive values, and focuses on the engineering considerations.
+
+## The hidden coupling behind a product generation
+
+A product is rarely represented in one place. The catalog may contain selectable models and options; pricing may depend on components and configurations; drawings and documents must match the selected model; and search must point to the same product identity that the ordering workflow uses.
+
+If each layer determines product identity independently, the transition becomes fragile. For example, relying on a model-number string where an explicit identifier is available couples behavior to naming conventions instead of business identity.
+
+The work included moving product resolution toward group and exact-identifier strategies, modeling kit contents as subcomponents, and rebuilding the component search index. Each change helps align different parts of the application around a more stable product representation.
+
+## Make retirement a business operation
+
+Retiring an old product generation involves more than marking rows inactive. Existing quotes, dependencies, and administrative workflows may continue to refer to it, while new business operations should prefer the replacement line.
+
+This creates domain questions worth modeling explicitly:
+
+- Which operations can still reference retired products?
+- What dependencies must be reviewed before retirement?
+- How should a configurable product differ from a parts-only definition?
+- Which attributes belong to the product definition versus a particular configuration?
+
+The questions above illustrate the modeling problem; they do not disclose proprietary policies or claim which answers were chosen.
+
+## Deliver vertical slices, not disconnected layers
+
+The transition covered catalog data, cost values supplied by the product team, component structure, pricing corrections, product resolution, drawing selection, and indexing. It also included catalog-authoring capabilities: secured endpoints, audit logging, product-definition and retirement UI, and impact checks.
+
+That breadth matters because a backend model is not finished when the database migration succeeds. Someone needs to administer the new catalog, a customer-facing flow must resolve products correctly, and downstream documents must remain consistent.
+
+A useful vertical slice follows the business operation from interface through application and domain behavior into persistence and integration, with tests around the critical rules.
+
+## Safety and reversibility in data migrations
+
+Catalog transitions are especially sensitive to existing records and historical references. Rather than treating deactivation and migration as simple CRUD, I favor checking downstream dependencies, keeping identifiers explicit, and defining how older data continues to behave.
+
+The reviewed work included retirement-impact checks and correctness fixes across options, pricing differences, and product attributes. The supplied evidence does not establish a quantified reduction in catalog errors or operational time, so I would not claim one.
+
+## Enable the next change
+
+Beyond the immediate product generation, catalog-authoring work introduced administrative capabilities and hand-off documentation. This matters for technical leadership: a well-designed transition should leave behind a maintainable process for the next product introduction, not a script that only its original author understands.
+
+## What this taught me
+
+Product transitions are system-design problems with a strong domain-modeling component. The engineering challenge is to make the product identity, constraints, and lifecycle coherent across data, calculations, search, documents, and user workflows.
+
+An effective implementation does not merely introduce the new product. It also preserves correct behavior for existing customers and gives the business a reliable way to manage future changes.

@@ -5,6 +5,8 @@ import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const targets = [
+  { name: 'Pathway', url: 'https://pathway.orangecastle.net/', file: 'pathway-overview.png', host: 'pathway.orangecastle.net' },
+  { name: 'Theoria', url: 'https://theoria.orangecastle.net/', file: 'theoria-overview.png', host: 'theoria.orangecastle.net' },
   { name: 'Molly\'s Learning Arcade', url: 'https://mollyslearningarcade.com/', file: 'molly-overview.png', host: 'mollyslearningarcade.com' },
   { name: 'Praxis Studio', url: 'https://praxis-studio.app/', file: 'praxis-overview.png', host: 'praxis-studio.app' },
 ];

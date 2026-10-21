@@ -83,4 +83,7 @@ try {
 } finally {
   if(browser)await browser.close();
   preview.kill('SIGTERM');
+  preview.stdout.destroy();
+  preview.stderr.destroy();
+  preview.unref();
 }

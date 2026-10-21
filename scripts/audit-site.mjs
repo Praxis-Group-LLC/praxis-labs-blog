@@ -1,6 +1,8 @@
 // Local browser audit of the real built portfolio at desktop and mobile widths.
 // Called in CI after astro build and static résumé PDF generation.
-import { chromium, devices } from 'playwright';
+import { chromium } from 'playwright';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 
 const PORT = '44322';
@@ -21,7 +23,10 @@ const architecturePages = [
   '/posts/azure-modernization-without-big-bang-rewrite'
 ];
 
-const preview = spawn(process.execPath, ['node_modules/astro/astro.js','preview','--host','127.0.0.1','--port',PORT], { stdio:['ignore','pipe','pipe'] });
+// Resolve Astro's actual executable from the installed package rather than guessing its path.
+const astroPackage = JSON.parse(await readFile(resolve('node_modules/astro/package.json'), 'utf8'));
+const astroExecutable = resolve('node_modules/astro', astroPackage.bin.astro);
+const preview = spawn(process.execPath, [astroExecutable, 'preview', '--host', '127.0.0.1', '--port', PORT], { stdio:['ignore','pipe','pipe'] });
 preview.stdout.on('data', x=>process.stdout.write(x));
 preview.stderr.on('data', x=>process.stderr.write(x));
 let browser;

@@ -5,6 +5,7 @@ on:
       - feature/recruiter-audit-downloadable-resume
     paths:
       - 'scripts/generate-resume-pdf.mjs'
+      - 'scripts/audit-site.mjs'
       - '.github/workflows/generate-resume-pdf.yml'
   workflow_dispatch:
 permissions:
@@ -12,6 +13,7 @@ permissions:
 jobs:
   pdf:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,5 +45,6 @@ jobs:
           git add public/conor-brown-resume.pdf
           if ! git diff --cached --quiet; then
             git commit -m "Add downloadable browser-verified résumé PDF [skip ci]"
+            git pull --rebase origin "${{ github.ref_name }}"
             git push origin "HEAD:${{ github.ref_name }}"
           fi

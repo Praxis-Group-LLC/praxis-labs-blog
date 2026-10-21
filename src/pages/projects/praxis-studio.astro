@@ -1,8 +1,52 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 ---
-<Layout title="Praxis Studio | Conor Brown" description="Praxis Studio is an independent mobile application project that offers an opportunity to demonstrate cross-platform product development.">
-<main class="article"><p class="eyebrow">Project walkthrough · Mobile product engineering</p><h1>Praxis Studio</h1><p class="lead">Praxis Studio is an independent mobile application project that offers an opportunity to demonstrate cross-platform product development.</p><div class="actions"><a class="button" href="/projects">All projects</a></div>
-<h2>Product thinking</h2><p>A mobile product must balance consistent domain behavior with platform-specific navigation, state, and user-interface expectations.</p><h2>Engineering considerations</h2><p>This page is a starting point, not a claim that a particular mobile architecture or deployment strategy has been implemented.</p><h2>Evidence and next steps</h2><p>Next: document verified features, screenshots, architecture and integration boundaries after inspecting the application source.</p>
-<div class="note"><strong>Work in progress:</strong> These walkthroughs describe known product direction. They do not substitute illustrative images for real screenshots or claim unverified technical results.</div>
-</main></Layout>
+<Layout title="Praxis Studio — Architecture | Conor Brown" description="Cross-platform music-practice product architecture, shared core logic, and .NET domain boundaries.">
+<main class="article">
+<p class="eyebrow">Project walkthrough · Cross-platform product engineering</p>
+<h1>Praxis Studio</h1>
+<p class="lead">A music-learning and practice product spanning a React web application, an Expo/React Native mobile application, reusable TypeScript music-theory logic, and a .NET backend.</p>
+<div class="actions"><a class="button primary" href="https://praxis-studio.app/">Visit public website ↗</a><a class="button" href="/projects">All projects</a></div>
+<h2>Real product visual</h2>
+<figure class="project-capture" hidden><img src="/projects/praxis-overview.png" alt="Capture of the publicly accessible Praxis Studio homepage" loading="lazy" onload="this.parentElement.hidden=false" onerror="this.parentElement.remove()" /><figcaption>Actual publicly accessible homepage, captured in a browser—not a mockup or mobile-app screen.</figcaption></figure>
+<p>See the <a href="https://praxis-studio.app/">public site</a> directly. A browser screenshot will appear above if the public-page capture succeeds; authenticated or subscription-only screens are not included.</p>
+<h2>Product architecture</h2>
+<p>The main design challenge is sharing deterministic music logic across two very different presentation platforms without forcing browser APIs, DOM assumptions, or native navigation into the common package.</p>
+<pre class="mermaid">flowchart TD
+  W[React and Vite web app] --> S[Shared TypeScript music core]
+  M[Expo and React Native mobile] --> S
+  W --> A[ASP.NET Core API]
+  M --> A
+  A --> AP[Application layer and contracts]
+  AP --> D[Domain bounded contexts]
+  A --> INF[Infrastructure and EF Core]
+  INF --> DB[(PostgreSQL)]
+</pre>
+<p>Logical dependency diagram based on the repository structure; not a production deployment topology. The shared core is client-side reusable logic, not an intermediary service.</p>
+<h2>Decisions visible in the implementation</h2>
+<ul>
+<li><strong>Backend:</strong> a .NET 10 modular monolith with separate API, Application, Domain and Infrastructure projects; bounded contexts include Identity, Practice and Billing.</li>
+<li><strong>Platform-specific adapters:</strong> navigation, authentication session handling, native storage and audio playback remain outside shared TypeScript logic.</li>
+<li><strong>Shared domain calculations:</strong> the <code>@praxis-studio/core</code> package contains music logic for fretboard displays, modes, backing tracks, chords, exercises and settings.</li>
+<li><strong>Product workspaces:</strong> the web application distinguishes learning/creation activities from training/practice experiences, with routes and tested workspace-resolution logic.</li>
+<li><strong>Quality:</strong> the web and mobile projects include automated unit/component tests and the web project provides end-to-end test configuration.</li>
+</ul>
+<h2>Tradeoff: shared behavior versus platform boundaries</h2>
+<p>Platform-neutral musical calculations can be reused through the shared TypeScript package, while authenticated workflows, persistence and billing remain backend concerns. The architecture distinguishes common logic from platform-specific navigation, audio playback and native storage.</p>
+<h2>Evidence boundary</h2>
+<p>The application repository is private. This case study summarizes inspected source and documented architectural decisions without linking proprietary files, showing secrets, or disclosing operational security details. A public UI screenshot is evidence of the product presentation—not proof of any backend guarantee.</p>
+</main>
+<style>.project-capture{margin:1.5rem 0}.project-capture img{display:block;width:100%;max-width:100%;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.2)}.project-capture figcaption{font-size:.85rem;opacity:.8;margin-top:.5rem}</style>
+</Layout>
+<script>
+  import mermaid from 'mermaid';
+  mermaid.initialize({ startOnLoad: false, theme: 'dark', flowchart: { useMaxWidth: true, htmlLabels: false } });
+  const blocks = [...document.querySelectorAll('pre.mermaid')];
+  for (const block of blocks) {
+    const diagram = document.createElement('div');
+    diagram.className = 'mermaid';
+    diagram.textContent = block.textContent;
+    block.replaceWith(diagram);
+  }
+  if (blocks.length) await mermaid.run({ querySelector: '.mermaid' });
+</script>

@@ -1,0 +1,39 @@
+name: Capture public portfolio product screenshots
+on:
+  push:
+    branches:
+      - feature/molly-praxis-visual-evidence
+    paths:
+      - 'scripts/capture-projects.mjs'
+      - 'src/pages/projects/mollys-learning-arcade.astro'
+      - 'src/pages/projects/praxis-studio.astro'
+      - '.github/workflows/capture-portfolio-projects.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser tooling
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Capture public pages with a clean browser
+        run: node scripts/capture-projects.mjs
+      - name: Commit genuine screenshot artifacts
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/projects/*.png
+          if ! git diff --cached --quiet; then
+            git commit -m "Capture public product screenshots [skip ci]"
+            git push origin "HEAD:${{ github.ref_name }}"
+          fi

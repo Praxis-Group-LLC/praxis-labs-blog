@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Résumé | Conor Brown" description="Conor Brown software engineering résumé: distributed systems, architecture, Azure, domain-driven design, and product engineering.">
+<main class="article resume-print">
+<p class="eyebrow">Professional résumé</p>
+<h1>Conor Brown</h1>
+<p class="lead">Software Engineer · Distributed Systems · Architecture · Product Engineering</p>
+<p>Oklahoma, USA · <a href="mailto:carllbrown87@gmail.com">carllbrown87@gmail.com</a> · <a href="https://www.linkedin.com/in/conor--brown/">LinkedIn</a> · <a href="https://github.com/conorbrown-dev">GitHub</a></p>
+<div class="actions no-print"><button class="button primary" type="button" onclick="window.print()">Print / Save as PDF ↓</button><a class="button" href="/about">Professional profile</a></div>
+<h2>Profile</h2>
+<p>Software engineer with 12+ years of professional experience designing and modernizing production systems. My background includes .NET and cloud architecture, distributed infrastructure, payments, domain-driven design, developer enablement, and full-stack product delivery. I combine deep implementation with architectural guidance and cross-team collaboration.</p>
+<h2>Selected impact</h2>
+<ul>
+<li>Built a remote infrastructure management and update-delivery system operating across 2,000+ servers.</li>
+<li>Designed a distributed API usage logging pipeline with a 99.9% delivery SLA.</li>
+<li>Delivered a containerized Card Account Updater microservice for subscription continuity in a payments platform.</li>
+<li>Led or contributed substantially to an incremental Azure App Service migration spanning container readiness, managed identity, Key Vault, CI/CD, staging validation, authentication, and reversible cutover.</li>
+<li>Built workflow/rules capabilities using DDD and CQRS; led workshops, reviewed architecture across teams, and codified implementation guidance with a canonical domain-model reference slice.</li>
+<li>Supported a major product-generation transition through catalog and pricing changes, product identity, components, drawings, search, and administration workflows.</li>
+</ul>
+<h2>Professional experience</h2>
+<h3>MIRATECH <span class="muted">· April 2025–Present</span></h3>
+<p>Software Developer III (official title) · Enterprise application modernization and architecture</p>
+<ul><li>Implemented Azure delivery foundations, container and configuration improvements, and automated test coverage.</li><li>Developed domain-oriented workflow and rules functionality through the API, persistence, UI, and tests.</li><li>Facilitated DDD learning sessions and helped shape coding and architecture standards for future development.</li></ul>
+<h3>IXOPAY <span class="muted">· June 2021–April 2025</span></h3>
+<p>Senior Software Engineer · Payments platform engineering</p>
+<ul><li>Designed and delivered containerized payments-related microservices, including account updating for expiring and replaced cards.</li><li>Worked on resilient integration and distributed processing in business-critical systems.</li></ul>
+<p class="muted">Earlier engineering experience includes distributed web-hosting management, service automation, and full-stack platform modernization. Additional employers and dates are available in the full career history.</p>
+<h2>Technical focus</h2>
+<p><strong>Backend:</strong> C#, .NET, ASP.NET Core, Web API, MVC, Blazor, DDD, CQRS, Clean Architecture, event-driven systems.</p>
+<p><strong>Cloud and delivery:</strong> Azure App Service, Azure Service Bus, Key Vault, App Configuration, containers, Azure Pipelines, GitHub Actions, observability.</p>
+<p><strong>Frontend and data:</strong> React, TypeScript, JavaScript, React Native/Expo, SQL Server, PostgreSQL, MySQL, MongoDB, Cosmos DB, database performance tuning.</p>
+<p><strong>Engineering quality:</strong> xUnit, NUnit, Playwright, Cypress, code and architecture review, automated delivery.</p>
+<h2>Selected work and writing</h2>
+<p><a href="/work">Engineering case studies</a> · <a href="/projects">Independent products</a> · <a href="/writing">Architecture writing</a></p>
+<p class="muted">This is a concise public résumé. It intentionally omits some earlier employment details rather than inventing dates or responsibilities.</p>
+</main>
+<style>
+@media print {
+  @page {size:letter; margin:0.55in}
+  :global(body){background:#fff!important;color:#111!important;font-size:10pt!important;line-height:1.3!important}
+  :global(.site-header), :global(.site-footer), :global(.no-print){display:none!important}
+  :global(.page-shell main){padding:0!important;width:100%!important;margin:0!important}
+  :global(.resume-print h1){font-size:26pt!important;color:#111!important}
+  :global(.resume-print h2){font-size:13pt!important;color:#111!important;margin:15px 0 6px!important}
+  :global(.resume-print h3){font-size:11pt!important;color:#111!important}
+  :global(.resume-print p), :global(.resume-print li), :global(.resume-print .lead), :global(.resume-print .muted){color:#111!important;font-size:10pt!important;line-height:1.3!important}
+  :global(.resume-print a){color:#111!important;text-decoration:underline!important}
+  :global(.resume-print .eyebrow){color:#333!important}
+  :global(.resume-print li){margin:3px 0!important}
+  :global(.resume-print h2), :global(.resume-print h3){break-after:avoid}
+}
+</style>
+</Layout>

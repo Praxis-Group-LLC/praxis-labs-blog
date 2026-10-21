@@ -1,0 +1,72 @@
+---
+title: "Modernizing Legacy .NET Delivery for Azure Without a Big-Bang Rewrite"
+description: "How I approached Azure App Service readiness, deployment automation, authentication, staging validation, and a reversible production cutover."
+---
+# Modernizing Legacy .NET Delivery for Azure Without a Big-Bang Rewrite
+
+Moving an established business application to a cloud platform isn't just a hosting decision. Deployment pipelines, identity, configuration, supporting workflows, testing, and the ability to reverse a change all matter.
+
+During 2025–2026, I led a sequence of modernization work that moved an existing .NET application toward Azure App Service delivery. This account is deliberately high level: it explains the engineering decisions and delivery concerns without exposing employer configuration, internal architecture diagrams, secrets, or business-specific details.
+
+## The problem: delivery is a system
+
+An application might build successfully in a container and still fail as a production migration. It may assume IIS configuration, require environment-specific frontend builds, depend on local secrets, or rely on operational jobs that are easy to overlook.
+
+The goal was not merely to make the code run in Azure. It was to make the application **deployable, configurable, observable, testable, and recoverable** in its new environment.
+
+That framing shaped an incremental rollout rather than a single cutover.
+
+## Separate configuration from the artifact
+
+A deployable artifact should not need to be rebuilt merely because it moves between environments. The migration included runtime Entra configuration and environment-aware deployment patterns, helping reduce the coupling between builds and the environments receiving them.
+
+For a containerized ASP.NET Core application, runtime configuration also means respecting the hosting platform's network contract. One of the concrete migration tasks was honoring `ASPNETCORE_URLS`, so the process could listen on the address and port expected by its environment.
+
+## Handle secrets and identity explicitly
+
+The work introduced Azure Key Vault access using federated managed identity. The architectural objective was to keep application secrets and identity configuration out of the deployment artifact and move access control into the hosting environment.
+
+This changes the operational questions the team needs to answer:
+
+- Which runtime identity accesses which secrets?
+- Where are environment-specific values configured?
+- How does the application fail when required configuration is missing?
+- Can we rotate credentials without rebuilding the application?
+
+Those are examples of the design questions, not a disclosure of private production settings.
+
+## Build a deployment path that can be observed and tested
+
+The migration work included a parallel deployment pipeline for the administrative portal, staging validation, serving the single-page application from the API, and Playwright end-to-end checks against Azure staging.
+
+I also addressed surrounding capabilities that could otherwise become migration regressions: PDF and Excel workflows, reindex operations, and unhandled exception logging. These are easily overlooked when the visible goal is simply to move a web application.
+
+A useful migration validation plan covers more than whether the landing page returns HTTP 200. It checks authenticated flows, critical business operations, generated output, and operational behavior in the new environment.
+
+## Treat rollback as part of the architecture
+
+The production delivery sequence included DNS/TLS cutover work with an IIS rollback path. An important principle here is that reversibility must be designed before the launch, not improvised during an incident.
+
+For an incremental migration, I prefer to make the transition points explicit: what has been validated in staging, which configuration is applied at runtime, what the team will observe after cutover, and what conditions justify reverting.
+
+I won't claim zero downtime or a particular reduction in incident rates because those outcomes are not established by the reviewed records.
+
+## Modernization continues after the initial migration
+
+Related work included Linux container and Docker Compose support for the modern and legacy applications, as well as improvements to pipeline environment selection. The broader engineering effort also included updating authentication dependencies, shifting frontend E2E coverage from Cypress to Playwright, and tightening the developer-to-production workflow.
+
+These improvements matter together: a cloud migration is sustainable only when everyday development, QA, releases, and support can follow the new delivery model.
+
+## Lessons I would carry forward
+
+**Start with operating assumptions.** Inventory application behavior beyond HTTP endpoints, including authentication, generated files, background operations, and indexing.
+
+**Choose incremental boundaries.** Build and test a parallel path before relying on it in production.
+
+**Prefer runtime configuration.** Reduce environment-specific build differences and keep secret access out of application artifacts.
+
+**Design for failure and reversal.** Logging, staging checks, and rollback provisions are engineering deliverables, not launch-day extras.
+
+**Measure outcomes when possible.** Future retrospectives should compare release effort, recovery time, configuration incidents, and operational defects—but the available evidence doesn't establish public numbers for those measures.
+
+The lasting lesson is that cloud readiness is a property of the entire delivery system, not just the application's runtime.

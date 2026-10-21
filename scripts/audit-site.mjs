@@ -1,6 +1,8 @@
 // Local browser audit of the real built portfolio at desktop and mobile widths.
 // Called in CI after astro build and static résumé PDF generation.
-import { chromium, devices } from 'playwright';
+import { chromium } from 'playwright';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 
 const PORT = '44322';
@@ -21,7 +23,10 @@ const architecturePages = [
   '/posts/azure-modernization-without-big-bang-rewrite'
 ];
 
-const preview = spawn(process.execPath, ['node_modules/astro/astro.js','preview','--host','127.0.0.1','--port',PORT], { stdio:['ignore','pipe','pipe'] });
+// Resolve Astro's actual executable from the installed package rather than guessing its path.
+const astroPackage = JSON.parse(await readFile(resolve('node_modules/astro/package.json'), 'utf8'));
+const astroExecutable = resolve('node_modules/astro', astroPackage.bin.astro);
+const preview = spawn(process.execPath, [astroExecutable, 'preview', '--host', '127.0.0.1', '--port', PORT], { stdio:['ignore','pipe','pipe'] });
 preview.stdout.on('data', x=>process.stdout.write(x));
 preview.stderr.on('data', x=>process.stderr.write(x));
 let browser;
@@ -55,11 +60,25 @@ try {
         await svg.first().waitFor({state:'visible',timeout:12000});
       }
       if(route.startsWith('/projects/')){
-        const img=page.locator('.project-capture img');
+        const figure=page.locator('.project-capture');
+        const img=figure.locator('img');
         if(await img.count()){
-          await img.first().evaluate(image=>image.decode());
-          const width=await img.first().evaluate(image=>image.naturalWidth);
-          if(width<200)throw new Error(`${cfg.name} ${route}: Missing/broken screenshot`);
+          if(!await figure.isVisible())throw new Error(`${cfg.name} ${route}: Screenshot figure is hidden`);
+          const src=await img.getAttribute('src');
+          if(!src)throw new Error(`${cfg.name} ${route}: Screenshot has no source`);
+          // Check the actual served asset with a bounded request; lazy images may not load
+          // until scrolled into view, so never await image.decode() offscreen.
+          const screenshot=await page.request.get(new URL(src,ORIGIN).href,{timeout:8000});
+          if(!screenshot.ok())throw new Error(`${cfg.name} ${route}: Screenshot HTTP ${screenshot.status()}`);
+          const bytes=await screenshot.body();
+          if(bytes.length<1000||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a'){
+            throw new Error(`${cfg.name} ${route}: Invalid PNG image asset`);
+          }
+          await img.scrollIntoViewIfNeeded({timeout:5000});
+          await page.waitForFunction(selector=>{
+            const element=document.querySelector(selector);
+            return element instanceof HTMLImageElement && element.complete && element.naturalWidth>200;
+          },`.project-capture img[src="${src}"]`,{timeout:8000});
         }
       }
       if(errors.length)throw new Error(`${cfg.name} ${route}: JavaScript error: ${errors.join('; ')}`);

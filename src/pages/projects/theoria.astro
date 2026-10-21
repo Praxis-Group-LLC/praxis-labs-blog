@@ -1,8 +1,38 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 ---
-<Layout title="Theoria | Conor Brown" description="Theoria is a separate learning product for music theory, playing, production, mixing, and mastering.">
-<main class="article"><p class="eyebrow">Project walkthrough · Music education platform</p><h1>Theoria</h1><p class="lead">Theoria is a separate learning product for music theory, playing, production, mixing, and mastering.</p><div class="actions"><a class="button primary" href="https://theoria.orangecastle.net">Visit product ↗</a><a class="button" href="/projects">All projects</a></div>
-<h2>Product thinking</h2><p>Its lessons prioritize repeatable, hands-on workflows—such as gain staging, fader balance, EQ, compression, and listening to professional reference tracks—rather than presenting disconnected definitions.</p><h2>Engineering considerations</h2><p>The product-design challenge is to guide a learner from basic concepts to a complete creative workflow without assuming that they already understand the tools.</p><h2>Evidence and next steps</h2><p>Future revisions will add verified product screenshots, curriculum data structures, and the exact architectural decisions made in the application.</p>
-<div class="note"><strong>Work in progress:</strong> These walkthroughs describe known product direction. They do not substitute illustrative images for real screenshots or claim unverified technical results.</div>
+<Layout title="Theoria — Architecture | Conor Brown" description="Theoria's curriculum model and application architecture for practical music education.">
+<main class="article"><p class="eyebrow">Project walkthrough · Product architecture</p><h1>Theoria</h1><p class="lead">Theoria is an interactive music-learning platform covering music theory, playing, production, mixing, and mastering. It adapts the learning-system patterns developed for Pathway to a different educational domain.</p>
+<div class="actions"><a class="button primary" href="https://theoria.orangecastle.net">Try Theoria ↗</a><a class="button" href="/projects">All projects</a></div>
+<h2>The product-design problem</h2><p>Music-learning content depends on genre, discipline, instrument, and the learner's experience. Rather than creating unrelated lesson pages, the platform models this hierarchy and maintains progress independently of changing genre preferences.</p>
+<h2>Verified stack</h2><ul>
+<li>React 19, TypeScript, Vite and Tailwind CSS for the learning interface.</li>
+<li>.NET 10 minimal API with PostgreSQL persistence through Entity Framework Core.</li>
+<li>Keycloak OIDC and PKCE for identity; browser-local progress permits guest learning.</li>
+<li>Railway-ready configuration for frontend and backend deployment.</li>
+</ul>
+<h2>Curriculum model</h2>
+<pre class="mermaid">flowchart TD
+P[Learner profile] --> G[Target genre preference]
+G --> D[Discipline: Theory, Mixing, Producing, Mastering]
+D --> C[Course]
+C --> L[Lesson and practice exercise]
+P --> R[Progress tracking]
+</pre>
+<p>This is an illustrative model of the repository's documented curriculum hierarchy, not a database entity-relationship diagram.</p>
+<h2>Deliberate separation of roadmap and implementation</h2><p>Current parameter exercises represent real-world audio controls, but the repository explicitly states that they do not process audio yet. The proposed Audio Lab would use Web Audio APIs, AudioWorklet or WebAssembly DSP while retaining lesson and progress identifiers. I distinguish this planned capability from working functionality because architecture communication should accurately reflect delivery state.</p>
+<h2>Shared patterns, separate products</h2><p>Theoria reuses architectural and interaction concepts from Pathway while maintaining its own curriculum language. Its documented optional donation mechanism is configuration-based and relies on a separate externally hosted payment page; access to educational material does not require donations.</p>
+<p>This case study draws on repository documentation. Detailed screenshots and code-level references should be incorporated after reviewing individual implementations.</p>
 </main></Layout>
+<script>
+import mermaid from 'mermaid';
+mermaid.initialize({ startOnLoad: false, theme: 'dark', flowchart: { useMaxWidth: true, htmlLabels: false } });
+const diagrams = [...document.querySelectorAll('pre.mermaid')];
+for (const node of diagrams) {
+  const diagram = document.createElement('div');
+  diagram.className = 'mermaid';
+  diagram.textContent = node.textContent;
+  node.replaceWith(diagram);
+}
+if (diagrams.length) await mermaid.run({ querySelector: '.mermaid' });
+</script>

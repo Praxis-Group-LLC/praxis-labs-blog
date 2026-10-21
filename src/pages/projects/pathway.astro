@@ -1,8 +1,39 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 ---
-<Layout title="Pathway | Conor Brown" description="Pathway is an independently developed learning platform for people moving from fundamentals toward deeper technical knowledge.">
-<main class="article"><p class="eyebrow">Project walkthrough · Software engineering education</p><h1>Pathway</h1><p class="lead">Pathway is an independently developed learning platform for people moving from fundamentals toward deeper technical knowledge.</p><div class="actions"><a class="button primary" href="https://pathway.orangecastle.net">Visit product ↗</a><a class="button" href="https://github.com/conorbrown-dev/pathway">Source code ↗</a><a class="button" href="/projects">All projects</a></div>
-<h2>Product thinking</h2><p>Its curriculum emphasizes defining concepts before using them, working examples, exercises interleaved with instruction, and assessments after a module rather than showing an answer beside a question.</p><h2>Engineering considerations</h2><p>The engineering challenge is keeping learning content consistent while courses and disciplines expand. The product needs structured lessons, navigable progression, and practical exercises that help learners apply unfamiliar concepts.</p><h2>Evidence and next steps</h2><p>This case study will be expanded with implementation diagrams and screenshots after those details have been verified against the current codebase.</p>
-<div class="note"><strong>Work in progress:</strong> These walkthroughs describe known product direction. They do not substitute illustrative images for real screenshots or claim unverified technical results.</div>
+<Layout title="Pathway — Architecture | Conor Brown" description="Architecture and engineering decisions behind Pathway, a full-stack technical education platform.">
+<main class="article"><p class="eyebrow">Project walkthrough · Full-stack architecture</p><h1>Pathway</h1><p class="lead">Pathway is a full-stack platform for practical technical education, with a React learning interface, a .NET API, authentication, persistent progress, and isolated evaluation of learner code.</p>
+<div class="actions"><a class="button primary" href="https://pathway.orangecastle.net">Try Pathway ↗</a><a class="button" href="https://github.com/conorbrown-dev/pathway">Inspect source ↗</a><a class="button" href="/projects">All projects</a></div>
+<h2>The engineering challenge</h2><p>Teaching programming requires more than displaying lesson content. A learner needs structured progression, useful feedback, stateful progress tracking, and a way to evaluate code without handing arbitrary execution to the public-facing application server.</p>
+<h2>Actual technology and boundaries</h2><ul>
+<li>Frontend: React 19, TypeScript, Vite and Tailwind CSS 4.</li>
+<li>API: ASP.NET Core on .NET 10, exposing course metadata, lessons and submission interfaces.</li>
+<li>Identity: Keycloak using OpenID Connect and PKCE, with learner state persisted to PostgreSQL when authenticated.</li>
+<li>Evaluation: private broker and per-submission isolated sandboxes described in the repository's production architecture.</li>
+<li>Delivery: separate web, API, identity, and broker service configurations for Railway.</li>
+</ul>
+<h2>Conceptual request flow</h2><p>The diagram summarizes the documented separation of responsibilities; it is not a snapshot of an active infrastructure environment.</p>
+<pre class="mermaid">flowchart TD
+L[Learner browser] --> W[React learning UI]
+W --> A[ASP.NET Core API]
+A --> P[(PostgreSQL progress)]
+A --> B[Private evaluation broker]
+B --> S[Isolated per-submission sandbox]
+</pre>
+<h2>Why the evaluator boundary matters</h2><p>Executing arbitrary learner code inside the web server creates unnecessary risk. The documented production design routes code submissions to a broker that creates isolated sandboxes with disabled outbound network access, bounded output, time and resource limits. Production code exercises fail closed when evaluator configuration is unavailable. Local lesson development can use deterministic checks and Roslyn syntax diagnostics without executing the submission.</p>
+<h2>Curriculum as structured content</h2><p>Typed, versioned lesson records carry explanatory content, examples, exercises and progression metadata. This makes the lesson engine reusable across course subjects and supports future changes to how content is authored and stored.</p>
+<h2>Quality and operational approach</h2><p>The repository documents Playwright smoke coverage for a guest learner loading and interacting with lessons, as well as deployment runbooks and staging checks. These statements describe documented design and tests, not independently measured availability or adoption.</p>
+<p><a href="https://github.com/conorbrown-dev/pathway/blob/main/README.md">Read the project's architecture and setup documentation ↗</a></p>
 </main></Layout>
+<script>
+import mermaid from 'mermaid';
+mermaid.initialize({ startOnLoad: false, theme: 'dark', flowchart: { useMaxWidth: true, htmlLabels: false } });
+const diagrams = [...document.querySelectorAll('pre.mermaid')];
+for (const node of diagrams) {
+  const diagram = document.createElement('div');
+  diagram.className = 'mermaid';
+  diagram.textContent = node.textContent;
+  node.replaceWith(diagram);
+}
+if (diagrams.length) await mermaid.run({ querySelector: '.mermaid' });
+</script>

@@ -21,7 +21,7 @@ const architecturePages = [
   '/posts/azure-modernization-without-big-bang-rewrite'
 ];
 
-const preview = spawn('npm', ['run','preview','--','--host','127.0.0.1','--port',PORT], { stdio:['ignore','pipe','pipe'] });
+const preview = spawn(process.execPath, ['node_modules/astro/astro.js','preview','--host','127.0.0.1','--port',PORT], { stdio:['ignore','pipe','pipe'] });
 preview.stdout.on('data', x=>process.stdout.write(x));
 preview.stderr.on('data', x=>process.stderr.write(x));
 let browser;

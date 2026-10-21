@@ -1,0 +1,60 @@
+---
+title: "Modernizing Workflow Rules Through Domain-Driven Design"
+description: "An incremental approach to putting business behavior in domain models while preserving existing administrative workflows."
+---
+# Modernizing Workflow Rules Through Domain-Driven Design
+
+An enterprise workflow system can accumulate business rules across controllers, forms, persistence logic, and loosely validated payloads. The hardest part of modernizing it isn't choosing a library or directory structure. It's deciding where business behavior belongs—and migrating without interrupting the business.
+
+This is a high-level retrospective on work I contributed to during 2025–2026. It intentionally omits proprietary rules, internal identifiers, source code, and customer data.
+
+## The architectural problem
+
+A workflow editor is more than CRUD. It must answer questions such as: which changes to a rule are valid, who may approve them, how do we identify a rule consistently, and how do changes affect existing workflows? When these answers live only in UI validation or in a sequence of handler conditionals, other entry points can bypass important constraints.
+
+Our modernization sought to express this behavior in a domain model and move from legacy workflow paths to a consistent application layer incrementally.
+
+## Start with business language and invariants
+
+I approach Domain-Driven Design (DDD) as a method for understanding the business, not as a folder structure. We need to identify the concepts the business actually uses, which operations must stay consistent, and which invalid states should be impossible to persist.
+
+For a workflow rule, examples of *questions* to resolve with domain experts are:
+
+- Is the rule name unique within a workflow?
+- Are multiple approvers with the same role valid?
+- What does removing an approver mean for a workflow in progress?
+- Can a condition refer to a variable that has been retired?
+
+These are questions, **not a representation of any employer's confidential policy**. Their answers should determine the aggregate's behavior and its tests.
+
+## An incremental modernization path
+
+The implementation work included domain modeling, CQRS-based command and query handling, persistence mapping, transaction behavior, API contracts, and administration UI integration. Instead of requiring an all-at-once rewrite, the team could incrementally replace existing paths.
+
+The rule-building work crossed several boundaries: validating and storing rule definitions, modeling technical signoff approvers, exposing API operations, wiring an editor, and automating critical flows with Playwright.
+
+The later migration included read adapters, workflow queries, ID-based lookup, aggregate-oriented update commands, and removal of legacy update paths. That matters because adding a rich domain model without retiring conflicting write paths can leave two competing definitions of correctness.
+
+## Why the aggregate boundary matters
+
+A useful aggregate is a consistency boundary, not merely an object graph. When a business operation updates several parts of a workflow rule, exposing individual property setters or repository operations can allow invalid intermediate states.
+
+An application command should orchestrate the use case: load the aggregate, invoke business operations, persist in a transaction, and return a stable result. It should not become the source of the business rules itself. Infrastructure remains responsible for database mapping and external integrations.
+
+This approach also creates more meaningful tests: rather than testing whether a controller rejects a particular payload, domain tests exercise the invariant across every caller.
+
+## Developer experience is part of the migration
+
+Moving rules into the model is only valuable if the people maintaining the system can use and trust it. Related delivery work improved the editor and reliability: shared search, configuration-based page gating, replacement of raw JSON authoring, null-handling improvements, clearer variable labels, and expression support.
+
+Teaching was part of the work too. I led DDD workshops and took part in architectural and code reviews, helping other engineers apply the concepts to actual business requirements rather than treating them as abstract patterns.
+
+## What I would measure
+
+Useful outcome measures include defects caused by invalid domain state, regressions in workflows during migration, test coverage of invariants, time to safely add a rule type, and the number of remaining legacy mutation paths. I don't have approved public figures for those measures and won't invent them.
+
+The broader delivery history shows that this was a sustained program of work rather than a one-off proof of concept, with workflow creation, rule editing, UI automation, and gradual replacement of legacy operations across multiple contributions.
+
+## Takeaway
+
+Successful modernization changes **where correctness lives**, not just which libraries the application uses. DDD earns its complexity when it makes business behavior explicit, testable, and difficult to bypass. The most durable migrations preserve useful workflows, replace old paths methodically, and make the architecture understandable to the rest of the team.

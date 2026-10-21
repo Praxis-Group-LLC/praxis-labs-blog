@@ -31,11 +31,12 @@ import Layout from '../../layouts/Layout.astro';
 <li><strong>Product workspaces:</strong> the web application distinguishes learning/creation activities from training/practice experiences, with routes and tested workspace-resolution logic.</li>
 <li><strong>Quality:</strong> the web and mobile projects include automated unit/component tests and the web project provides end-to-end test configuration.</li>
 </ul>
-<h2>Tradeoff: shared logic versus server-owned capabilities</h2>
-<p>Sharing calculation and content logic improves parity, but not all operations belong in a downloadable client bundle. The repository's engineering notes explicitly identify premium server-owned computations as a workstream. This page does not imply that those future security changes have all shipped.</p>
+<h2>Tradeoff: shared behavior versus platform boundaries</h2>
+<p>Platform-neutral musical calculations can be reused through the shared TypeScript package, while authenticated workflows, persistence and billing remain backend concerns. The architecture distinguishes common logic from platform-specific navigation, audio playback and native storage.</p>
 <h2>Evidence boundary</h2>
 <p>The application repository is private. This case study summarizes inspected source and documented architectural decisions without linking proprietary files, showing secrets, or disclosing operational security details. A public UI screenshot is evidence of the product presentation—not proof of any backend guarantee.</p>
 </main>
+<style>.project-capture{margin:1.5rem 0}.project-capture img{display:block;width:100%;max-width:100%;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.2)}.project-capture figcaption{font-size:.85rem;opacity:.8;margin-top:.5rem}</style>
 </Layout>
 <script>
   import mermaid from 'mermaid';

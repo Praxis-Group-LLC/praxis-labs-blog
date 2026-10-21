@@ -4,6 +4,9 @@ import Layout from '../../layouts/Layout.astro';
 <Layout title="Theoria — Architecture | Conor Brown" description="Theoria's curriculum model and application architecture for practical music education.">
 <main class="article"><p class="eyebrow">Project walkthrough · Product architecture</p><h1>Theoria</h1><p class="lead">Theoria is an interactive music-learning platform covering music theory, playing, production, mixing, and mastering. It adapts the learning-system patterns developed for Pathway to a different educational domain.</p>
 <div class="actions"><a class="button primary" href="https://theoria.orangecastle.net">Try Theoria ↗</a><a class="button" href="/projects">All projects</a></div>
+<h2>Product screenshot</h2>
+<figure class="project-capture" hidden><img src="/projects/theoria-overview.png" alt="Actual screenshot of the public Theoria music learning interface" loading="lazy" onload="this.parentElement.hidden=false" onerror="this.parentElement.remove()" /><figcaption>Captured from the public Theoria application using a clean browser session.</figcaption></figure>
+<p>Explore the <a href="https://theoria.orangecastle.net">live site</a>; the screenshot is displayed when the verified public-page capture is available.</p>
 <h2>The product-design problem</h2><p>Music-learning content depends on genre, discipline, instrument, and the learner's experience. Rather than creating unrelated lesson pages, the platform models this hierarchy and maintains progress independently of changing genre preferences.</p>
 <h2>Verified stack</h2><ul>
 <li>React 19, TypeScript, Vite and Tailwind CSS for the learning interface.</li>
@@ -22,8 +25,8 @@ P --> R[Progress tracking]
 <p>This is an illustrative model of the repository's documented curriculum hierarchy, not a database entity-relationship diagram.</p>
 <h2>Deliberate separation of roadmap and implementation</h2><p>Current parameter exercises represent real-world audio controls, but the repository explicitly states that they do not process audio yet. The proposed Audio Lab would use Web Audio APIs, AudioWorklet or WebAssembly DSP while retaining lesson and progress identifiers. I distinguish this planned capability from working functionality because architecture communication should accurately reflect delivery state.</p>
 <h2>Shared patterns, separate products</h2><p>Theoria reuses architectural and interaction concepts from Pathway while maintaining its own curriculum language. Its documented optional donation mechanism is configuration-based and relies on a separate externally hosted payment page; access to educational material does not require donations.</p>
-<p>This case study draws on repository documentation. Detailed screenshots and code-level references should be incorporated after reviewing individual implementations.</p>
-</main></Layout>
+<p>This case study draws on repository documentation. Additional code-level examples can be incorporated after inspecting the relevant implementation modules.</p>
+</main><style>.project-capture{margin:1.5rem 0}.project-capture img{display:block;width:100%;max-width:100%;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.2)}.project-capture figcaption{font-size:.85rem;opacity:.8;margin-top:.5rem}</style></Layout>
 <script>
 import mermaid from 'mermaid';
 mermaid.initialize({ startOnLoad: false, theme: 'dark', flowchart: { useMaxWidth: true, htmlLabels: false } });

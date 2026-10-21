@@ -1,6 +1,14 @@
 ---
 import '../styles/global.css';
-const { title = 'Conor Brown | Software Engineer, Architect & Product Builder', description = 'Engineering case studies, software products, and practical writing about building dependable systems.' } = Astro.props;
+const { image, imageAlt, title = 'Conor Brown | Software Engineer, Architect & Product Builder', description = 'Engineering case studies, software products, and practical writing about building dependable systems.' } = Astro.props;
+const socialCards: Record<string, { image: string; alt: string }> = {
+  '/posts/distributed-dotnet-agent-platform': { image: '/social/distributed-dotnet-agent-platform.png', alt: 'A distributed .NET agent platform — managing updates across 2,000+ Windows servers. Conor Brown.' },
+  '/posts/modernizing-workflow-rules-with-ddd': { image: '/social/modernizing-workflow-rules-with-ddd.png', alt: 'Workflow rules, modeled with DDD — business behavior, domain boundaries, and incremental change. Conor Brown.' },
+};
+const card = socialCards[Astro.url.pathname.replace(/\/$/, '')];
+const socialImage = new URL(image ?? card?.image ?? '/social/portfolio.png', 'https://conorbrown.orangecastle.net').href;
+const socialImageAlt = imageAlt ?? card?.alt ?? 'Conor Brown — software engineer and systems thinker. Distributed systems, software architecture, C# and .NET.';
+const canonicalURL = new URL(Astro.url.pathname, 'https://conorbrown.orangecastle.net').href;
 ---
 <!doctype html>
 <html lang="en">
@@ -11,9 +19,20 @@ const { title = 'Conor Brown | Software Engineer, Architect & Product Builder', 
 <meta name="description" content={description} />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <title>{title}</title>
+<link rel="canonical" href={canonicalURL} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
+<meta property="og:image" content={socialImage} />
+<meta property="og:image:alt" content={socialImageAlt} />
+{!image && <meta property="og:image:width" content="1200" />}
+{!image && <meta property="og:image:height" content="630" />}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImage} />
+<meta name="twitter:image:alt" content={socialImageAlt} />
 </head>
 <body>
 <a class="skip-link" href="#content">Skip to content</a>

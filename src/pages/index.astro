@@ -1,29 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const posts = Object.entries(
-	import.meta.glob('../blog/*.mdx', { eager: true })
-).map(([path, module]) => ({
-	slug: path.split('/').pop()?.replace(/\.mdx$/, ''),
-	title: module.frontmatter.title
-}));
 ---
-
 <Layout>
-	<main>
-		<p class="text-xs font-extrabold tracking-[.16em] text-[#b8a2ff]">PRAXIS LABS / FIELD NOTES</p>
-		<h1 class="page-title my-6 max-w-[45rem] text-[var(--ink)]">Ideas for building<br /><span class="text-[#a78bfa]">better systems.</span></h1>
-		<p class="mb-16 max-w-[34rem] text-[1.15rem] leading-relaxed text-[var(--muted)]">Notes on distributed systems, automation, and the people who make complex technology useful.</p>
-		<ul class="grid list-none gap-[.85rem] p-0">
-			{posts.map((post) => (
-				<li>
-					<a class="grid grid-cols-[3rem_1fr_auto] items-center gap-4 rounded-2xl border border-white/20 bg-white/[.07] p-[1.4rem] text-[var(--ink)] no-underline shadow-[0_.75rem_2rem_rgba(0,0,0,.22)] backdrop-blur-xl backdrop-saturate-[115%] transition duration-200 hover:-translate-y-[3px] hover:border-white/[.38] hover:bg-white/[.13]" href={`/posts/${post.slug}`}>
-						<span class="text-sm font-extrabold text-[#b8a2ff]">01</span>
-						<span class="text-[clamp(1.05rem,2.5vw,1.4rem)] leading-[1.25]">{post.title}</span>
-						<span class="text-2xl text-[#b8a2ff]">↗</span>
-					</a>
-				</li>
-			))}
-		</ul>
-	</main>
+<main>
+<div class="intro"><p class="eyebrow">Engineering systems · Building products · Sharing what works</p>
+<h1>Complex problems.<br /><span class="accent">Thoughtful systems.</span></h1>
+<p class="lead">I'm Conor Brown, a software engineer with 12 years of experience building business-critical platforms, distributed infrastructure, and products. I work across implementation, system design, and cross-team architecture.</p>
+<div class="actions"><a class="button primary" href="/work">Explore engineering work ↗</a><a class="button" href="/projects">View products</a><a class="button" href="/about">About & résumé</a></div></div>
+<div class="metrics" aria-label="Experience highlights"><div class="metric"><strong>12 years</strong><span>Professional software engineering</span></div><div class="metric"><strong>2,000+</strong><span>Servers served by a remote management system I built</span></div><div class="metric"><strong>99.9%</strong><span>Delivery SLA designed for API usage logging</span></div></div>
+<section><div class="section-heading"><h2>Selected engineering work</h2><a href="/work">All case studies →</a></div><div class="grid">
+<a class="card" href="/work"><span class="tag">Distributed infrastructure</span><h3>Managing thousands of servers remotely</h3><p>Designing a remote execution and update-delivery system for a distributed hosting fleet.</p></a>
+<a class="card" href="/work"><span class="tag">Technical leadership · DDD</span><h3>Bringing business rules into the domain</h3><p>Helping teams move behavior out of procedural application code and into domain models that reflect real workflows.</p></a>
+<a class="card" href="/work"><span class="tag">Reliability · Messaging</span><h3>Reliable asynchronous usage logging</h3><p>Building an Azure Service Bus-backed system for usage events with complex business rules and a delivery SLA.</p></a>
+<a class="card" href="/work"><span class="tag">Architectural judgment</span><h3>Replacing excessive search infrastructure</h3><p>Using targeted SQL search columns and indexing instead of a heavyweight Elasticsearch implementation.</p></a>
+</div></section>
+<section><div class="section-heading"><h2>Products I'm building</h2><a href="/projects">All projects →</a></div><div class="grid">
+<a class="card" href="https://pathway.orangecastle.net"><span class="tag">Education · Software engineering</span><h3>Pathway ↗</h3><p>Practical, layered learning paths for developers moving from first principles to deeper technical expertise.</p></a>
+<a class="card" href="https://theoria.orangecastle.net"><span class="tag">Education · Music</span><h3>Theoria ↗</h3><p>A hands-on learning platform for music theory, performance, production, mixing, and mastering.</p></a></div></section>
+<section><div class="section-heading"><h2>Writing and field notes</h2><a href="/writing">Read more →</a></div><p class="lead">Architecture decisions, distributed-systems tradeoffs, domain modeling, and lessons from real products. Substance over buzzwords.</p></section>
+</main>
 </Layout>

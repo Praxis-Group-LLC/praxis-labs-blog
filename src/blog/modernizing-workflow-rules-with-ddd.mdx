@@ -49,6 +49,14 @@ Moving rules into the model is only valuable if the people maintaining the syste
 
 Teaching was part of the work too. I led DDD workshops and took part in architectural and code reviews, helping other engineers apply the concepts to actual business requirements rather than treating them as abstract patterns.
 
+## Keeping future contributions aligned with the new architecture
+
+One risk with incremental modernization is that the next change follows the old architecture simply because most of the codebase still uses it. For the rules-engine application, I authored a `CLAUDE.md` instruction file documenting the target engineering conventions for Claude Code: domain-driven design patterns, modern C# coding standards, data-access practices, and dependency boundaries for Clean Architecture.
+
+Importantly, I directed the coding assistant to use the DDD slice I had built and presented to the team as its reference implementation, rather than imitating older application areas optimized for straightforward CRUD. That made the desired approach more discoverable while the migration was still underway.
+
+This is a form of architectural enablement, not a substitute for review or tests. Written standards and a canonical example can reduce ambiguity, but their effectiveness still depends on engineers validating AI-generated changes and maintaining the instructions as the architecture evolves. I haven't established a measured reduction in defects or rework attributable specifically to this instruction file.
+
 ## What I would measure
 
 Useful outcome measures include defects caused by invalid domain state, regressions in workflows during migration, test coverage of invariants, time to safely add a rule type, and the number of remaining legacy mutation paths. I don't have approved public figures for those measures and won't invent them.

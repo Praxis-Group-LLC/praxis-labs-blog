@@ -45,7 +45,7 @@ try {
       const page=await ctx.newPage();
       const errors=[];
       page.on('pageerror',e=>errors.push(e.message));
-      const response=await page.goto(ORIGIN+route,{waitUntil:'networkidle',timeout:30000});
+      const response=await page.goto(ORIGIN+route,{waitUntil:'domcontentloaded',timeout:15000});
       if(!response?.ok())throw new Error(`${cfg.name} ${route}: HTTP ${response?.status()}`);
       if(await page.locator('h1').count()===0)throw new Error(`${cfg.name} ${route}: Missing h1`);
       const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
@@ -68,11 +68,11 @@ try {
       await page.close();
     }
     const page=await ctx.newPage();
-    await page.goto(ORIGIN+'/work');
+    await page.goto(ORIGIN+'/work', { waitUntil: 'domcontentloaded' });
     for(const slug of ['distributed-dotnet-agent-platform','modernizing-workflow-rules-with-ddd','azure-modernization-without-big-bang-rewrite','product-line-transition-system-design']){
       if(await page.locator(`a[href="/posts/${slug}"]`).count()===0)throw new Error(`Work page missing article link: ${slug}`);
     }
-    await page.goto(ORIGIN+'/resume');
+    await page.goto(ORIGIN+'/resume', { waitUntil: 'domcontentloaded' });
     if(await page.locator('a[href="/conor-brown-resume.pdf"]').count()===0)throw new Error('Resume page missing PDF download');
     const pdf=await page.request.get(ORIGIN+'/conor-brown-resume.pdf');
     if(!pdf.ok()||!(pdf.headers()['content-type']??'').includes('pdf'))throw new Error('PDF download failed');

@@ -60,11 +60,25 @@ try {
         await svg.first().waitFor({state:'visible',timeout:12000});
       }
       if(route.startsWith('/projects/')){
-        const img=page.locator('.project-capture img');
+        const figure=page.locator('.project-capture');
+        const img=figure.locator('img');
         if(await img.count()){
-          await img.first().evaluate(image=>image.decode());
-          const width=await img.first().evaluate(image=>image.naturalWidth);
-          if(width<200)throw new Error(`${cfg.name} ${route}: Missing/broken screenshot`);
+          if(!await figure.isVisible())throw new Error(`${cfg.name} ${route}: Screenshot figure is hidden`);
+          const src=await img.getAttribute('src');
+          if(!src)throw new Error(`${cfg.name} ${route}: Screenshot has no source`);
+          // Check the actual served asset with a bounded request; lazy images may not load
+          // until scrolled into view, so never await image.decode() offscreen.
+          const screenshot=await page.request.get(new URL(src,ORIGIN).href,{timeout:8000});
+          if(!screenshot.ok())throw new Error(`${cfg.name} ${route}: Screenshot HTTP ${screenshot.status()}`);
+          const bytes=await screenshot.body();
+          if(bytes.length<1000||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a'){
+            throw new Error(`${cfg.name} ${route}: Invalid PNG image asset`);
+          }
+          await img.scrollIntoViewIfNeeded({timeout:5000});
+          await page.waitForFunction(selector=>{
+            const element=document.querySelector(selector);
+            return element instanceof HTMLImageElement && element.complete && element.naturalWidth>200;
+          },`.project-capture img[src="${src}"]`,{timeout:8000});
         }
       }
       if(errors.length)throw new Error(`${cfg.name} ${route}: JavaScript error: ${errors.join('; ')}`);

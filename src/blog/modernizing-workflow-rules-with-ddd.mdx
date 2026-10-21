@@ -8,6 +8,23 @@ An enterprise workflow system can accumulate business rules across controllers, 
 
 This is a high-level retrospective on work I contributed to during 2025–2026. It intentionally omits proprietary rules, internal identifiers, source code, and customer data.
 
+## Conceptual architecture
+
+The following diagram illustrates the responsibilities discussed here. It is **not** a reproduction of the employer's internal system architecture.
+
+```mermaid
+flowchart TD
+  A[Rule editor] --> B[API endpoint]
+  B --> C[Application command handler]
+  C --> D[Workflow aggregate]
+  D --> E{Domain invariants valid?}
+  E -->|Yes| F[Persistence port]
+  F --> G[(Workflow database)]
+  E -->|No| H[Domain error]
+```
+
+The important boundary is between application orchestration and domain behavior: the handler coordinates the use case, while the aggregate protects the business invariants.
+
 ## The architectural problem
 
 A workflow editor is more than CRUD. It must answer questions such as: which changes to a rule are valid, who may approve them, how do we identify a rule consistently, and how do changes affect existing workflows? When these answers live only in UI validation or in a sequence of handler conditionals, other entry points can bypass important constraints.

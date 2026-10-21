@@ -8,6 +8,27 @@ Moving an established business application to a cloud platform isn't just a host
 
 During 2025–2026, I led a sequence of modernization work that moved an existing .NET application toward Azure App Service delivery. This account is deliberately high level: it explains the engineering decisions and delivery concerns without exposing employer configuration, internal architecture diagrams, secrets, or business-specific details.
 
+## A migration path with a safety net
+
+This simplified diagram shows the **strategy and responsibilities**, not a topology diagram of a confidential production environment.
+
+```mermaid
+flowchart TD
+  A[Source changes] --> B[CI and build]
+  B --> C[Deploy to Azure staging]
+  C --> D[Automated and manual validation]
+  D --> E{Release criteria met?}
+  E -->|Yes| F[Production cutover]
+  E -->|No| G[Fix and retest]
+  G --> B
+  F --> H[Observe production behavior]
+  H --> I{Rollback needed?}
+  I -->|Yes| J[Retain IIS rollback path]
+  I -->|No| K[Continue operating in Azure]
+```
+
+The key decision is to treat deployment and rollback as part of the system design—not an afterthought once the application compiles.
+
 ## The problem: delivery is a system
 
 An application might build successfully in a container and still fail as a production migration. It may assume IIS configuration, require environment-specific frontend builds, depend on local secrets, or rely on operational jobs that are easy to overlook.

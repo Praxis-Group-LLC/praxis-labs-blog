@@ -1,8 +1,53 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 ---
-<Layout title="Molly's Learning Arcade | Conor Brown" description="An independent game-based learning project focused on using gameplay to make practice and learning more engaging.">
-<main class="article"><p class="eyebrow">Project walkthrough · Educational game</p><h1>Molly's Learning Arcade</h1><p class="lead">An independent game-based learning project focused on using gameplay to make practice and learning more engaging.</p><div class="actions"><a class="button" href="/projects">All projects</a></div>
-<h2>Product thinking</h2><p>The project explores the boundary between interaction design and educational goals: an activity needs both satisfying player feedback and a clear learning outcome.</p><h2>Engineering considerations</h2><p>This walkthrough intentionally avoids inventing gameplay mechanics, implementation details, or engagement metrics until they can be verified from the project itself.</p><h2>Evidence and next steps</h2><p>Next: add a real game screenshot, playable link, core game loop, and a discussion of technical and instructional tradeoffs.</p>
-<div class="note"><strong>Work in progress:</strong> These walkthroughs describe known product direction. They do not substitute illustrative images for real screenshots or claim unverified technical results.</div>
-</main></Layout>
+<Layout title="Molly's Learning Arcade — Architecture | Conor Brown" description="A code-backed walkthrough of a Phaser learning game with a curriculum engine, mastery tracking, and student progress.">
+<main class="article">
+<p class="eyebrow">Project walkthrough · Games, learning systems & full-stack development</p>
+<h1>Molly's Learning Arcade</h1>
+<p class="lead">A browser-based collection of educational games that combines interactive mechanics with a structured K–5 curriculum, skill progression, and learner-specific records.</p>
+<div class="actions"><a class="button primary" href="https://mollyslearningarcade.com/">Visit live application ↗</a><a class="button" href="https://github.com/conorbrown-dev/the-adventures-of-strong-bow">Inspect the public source ↗</a><a class="button" href="/projects">All projects</a></div>
+<h2>Real product visual</h2>
+<figure class="project-capture" hidden><img src="/projects/molly-overview.png" alt="Capture of the public, unauthenticated Molly's Learning Arcade interface" loading="lazy" onload="this.parentElement.hidden=false" onerror="this.parentElement.remove()" /><figcaption>Actual public landing page, captured in a browser—not a concept mockup.</figcaption></figure>
+<p>Explore the <a href="https://mollyslearningarcade.com/">live game</a> directly. A screenshot will appear above only when the automated public-page capture succeeds.</p>
+<h2>Why the design is more than a collection of games</h2>
+<p>The product separates immediate gameplay feedback from long-lived educational progress. A game can present a prompt or challenge, but the curriculum layer needs to track which standard or skill was exercised, the quality of the evidence, and when review is appropriate.</p>
+<p>The repository includes distinct responsibilities for Phaser scenes and systems; React quiz/learning interfaces; curriculum application, domain, and infrastructure modules; and student identity and persistence. The source models question templates, attempts, skill evidence, diagnostic placement, mastery state, and review schedules.</p>
+<h2>Architecture and data flow</h2>
+<pre class="mermaid">flowchart TD
+  L[Learner browser] --> R[React lessons and quiz UI]
+  L --> P[Phaser game scenes and systems]
+  R --> A[NestJS API]
+  P --> A
+  A --> I[Student identity]
+  A --> C[Curriculum application services]
+  C --> D[Standards, questions, mastery policies]
+  I --> DB[(PostgreSQL via Prisma)]
+  C --> DB
+</pre>
+<p>This diagram is a conceptual grouping of source modules, not an assertion that every game scene makes each API call directly.</p>
+<h2>Important engineering decisions</h2>
+<ul>
+<li><strong>Game architecture:</strong> scene composition stays distinct from shared gameplay entities and systems, so new mechanics need not inherit Fossil Dig-specific implementation details.</li>
+<li><strong>Curriculum as data:</strong> the system stores standards, question templates and attempt evidence separately from rendering, supporting multiple game experiences and evolving content.</li>
+<li><strong>Student-aware progress:</strong> the API derives identity from signed learner authentication rather than trusting a caller-supplied learner ID.</li>
+<li><strong>Mastery and review:</strong> evidence and review state are explicitly persisted, with adult-controlled mastery checks documented for the learning workflow.</li>
+<li><strong>Verification:</strong> the repository includes Vitest, Jest and Playwright coverage, plus separate curriculum validation and simulation tooling.</li>
+</ul>
+<h2>Evidence in the repository</h2>
+<p><a href="https://github.com/conorbrown-dev/the-adventures-of-strong-bow/blob/main/src/main.tsx">Phaser/React composition ↗</a> · <a href="https://github.com/conorbrown-dev/the-adventures-of-strong-bow/blob/main/server/prisma/schema.prisma">Curriculum data and progress schema ↗</a> · <a href="https://github.com/conorbrown-dev/the-adventures-of-strong-bow/blob/main/src/game/README.md">Game architecture guide ↗</a></p>
+<p class="muted">Technical descriptions reflect inspected repository source and documentation. No learner adoption, curriculum efficacy, or production uptime figures are claimed.</p>
+</main>
+</Layout>
+<script>
+  import mermaid from 'mermaid';
+  mermaid.initialize({ startOnLoad: false, theme: 'dark', flowchart: { useMaxWidth: true, htmlLabels: false } });
+  const blocks = [...document.querySelectorAll('pre.mermaid')];
+  for (const block of blocks) {
+    const diagram = document.createElement('div');
+    diagram.className = 'mermaid';
+    diagram.textContent = block.textContent;
+    block.replaceWith(diagram);
+  }
+  if (blocks.length) await mermaid.run({ querySelector: '.mermaid' });
+</script>

@@ -5,6 +5,8 @@ on:
       - feature/molly-praxis-visual-evidence
     paths:
       - 'scripts/capture-projects.mjs'
+      - 'src/pages/projects/pathway.astro'
+      - 'src/pages/projects/theoria.astro'
       - 'src/pages/projects/mollys-learning-arcade.astro'
       - 'src/pages/projects/praxis-studio.astro'
       - '.github/workflows/capture-portfolio-projects.yml'
@@ -35,7 +37,7 @@ jobs:
           path: public/projects/*.png
           if-no-files-found: warn
       - name: Commit genuine screenshot artifacts
-        if: success() && github.ref_name == 'feature/molly-praxis-visual-evidence'
+        if: always() && github.ref_name == 'feature/molly-praxis-visual-evidence'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

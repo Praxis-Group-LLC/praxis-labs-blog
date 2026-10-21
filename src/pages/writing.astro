@@ -1,0 +1,5 @@
+---
+import Layout from '../layouts/Layout.astro';
+const posts = Object.entries(import.meta.glob('../blog/*.mdx', { eager: true })).map(([path, module])=>({slug:path.split('/').pop()?.replace(/\.mdx$/,''),title:(module as any).frontmatter?.title??'Engineering note',description:(module as any).frontmatter?.description??''}));
+---
+<Layout title="Writing | Conor Brown"><main><div class="intro"><p class="eyebrow">Engineering notes</p><h1>Writing.</h1><p class="lead">Practical essays on domain-driven design, distributed systems, architecture, product engineering, and the decisions behind maintainable software.</p></div>{posts.length>0?<div class="grid">{posts.map(post=><a class="card" href={`/posts/${post.slug}`}><span class="tag">Article</span><h2>{post.title}</h2><p>{post.description}</p><span class="accent">Read article →</span></a>)}</div>:<div class="card"><h2>First essays are in preparation.</h2><p>Selected projects and architecture decisions are already available on the Engineering page.</p><a class="button" href="/work">Explore engineering work</a></div>}</main></Layout>

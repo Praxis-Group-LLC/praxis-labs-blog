@@ -1,55 +1,40 @@
 ---
 import Layout from '../layouts/Layout.astro';
 ---
-<Layout title="Résumé | Conor Brown" description="Conor Brown software engineering résumé: distributed systems, architecture, Azure, domain-driven design, and product engineering.">
-<main class="article resume-print">
-<p class="eyebrow">Professional résumé</p>
-<h1>Conor Brown</h1>
-<p class="lead">Software Engineer · Distributed Systems · Architecture · Product Engineering</p>
-<p>Oklahoma, USA · <a href="mailto:carllbrown87@gmail.com">carllbrown87@gmail.com</a> · <a href="https://www.linkedin.com/in/conor--brown/">LinkedIn</a> · <a href="https://github.com/conorbrown-dev">GitHub</a></p>
-<div class="actions no-print"><button class="button primary" type="button" onclick="window.print()">Print / Save as PDF ↓</button><a class="button" href="/about">Professional profile</a></div>
-<h2>Profile</h2>
-<p>Software engineer with 12+ years of professional experience designing and modernizing production systems. My background includes .NET and cloud architecture, distributed infrastructure, payments, domain-driven design, developer enablement, and full-stack product delivery. I combine deep implementation with architectural guidance and cross-team collaboration.</p>
-<h2>Selected impact</h2>
-<ul>
-<li>Built a remote infrastructure management and update-delivery system operating across 2,000+ servers.</li>
-<li>Designed a distributed API usage logging pipeline with a 99.9% delivery SLA.</li>
-<li>Delivered a containerized Card Account Updater microservice for subscription continuity in a payments platform.</li>
-<li>Led or contributed substantially to an incremental Azure App Service migration spanning container readiness, managed identity, Key Vault, CI/CD, staging validation, authentication, and reversible cutover.</li>
-<li>Built workflow/rules capabilities using DDD and CQRS; led workshops, reviewed architecture across teams, and codified implementation guidance with a canonical domain-model reference slice.</li>
-<li>Supported a major product-generation transition through catalog and pricing changes, product identity, components, drawings, search, and administration workflows.</li>
+<Layout title="Résumé — Conor Brown | Staff Software Engineer" description="Résumé: engineering leadership, distributed systems, payments, architecture and modernization.">
+<main class="resume-page">
+<div class="resume-toolbar"><a href="/about">← About</a><button type="button" id="print-resume" class="button primary">Print / Save as PDF</button></div>
+<header class="resume-heading"><h1>Conor Brown</h1><p><strong>Software Engineer · Systems Architecture · Product Engineering</strong></p><p>Oklahoma, USA · <a href="mailto:carllbrown87@gmail.com">carllbrown87@gmail.com</a> · <a href="https://www.linkedin.com/in/conor--brown/">LinkedIn</a> · <a href="https://github.com/conorbrown-dev">GitHub</a></p></header>
+<section><h2>Professional summary</h2><p>Software engineer with 12+ years of experience designing and modernizing business-critical applications, payments infrastructure and distributed systems. Hands-on technical leadership across domain-driven design, cloud migrations, engineering standards, delivery automation, and cross-team architecture reviews. Seeking Staff Software Engineer and Staff Product Engineer opportunities.</p></section>
+<section><h2>Selected engineering impact</h2><ul>
+<li>Designed remote web-hosting management and update-delivery infrastructure across <strong>2,000+ servers</strong>.</li>
+<li>Designed an Azure Service Bus-based API usage logging platform around a <strong>99.9% delivery SLA</strong>.</li>
+<li>Built a containerized Card Account Updater service for subscription-payment continuity.</li>
+<li>Led DDD sessions and implemented workflow/rules domain modeling; wrote AI-assisted development guidance to standardize future changes against a reference vertical slice.</li>
+<li>Led significant Azure App Service migration work across Key Vault, managed identity, containerization, staging and production delivery planning.</li>
+</ul></section>
+<section><h2>Professional experience</h2>
+<h3>MIRATECH <span>April 2025–Present</span></h3><p class="role">Software Developer III · Architecture and platform leadership responsibilities</p><ul>
+<li>Implemented DDD/CQRS workflow and rule-builder capabilities across aggregates, APIs, persistence, UI, and end-to-end testing, while guiding architectural reviews and workshops.</li>
+<li>Led a coordinated modernization path toward Azure App Service, including runtime configuration, Entra integration, Key Vault identity, parallel pipelines, staging validation, and rollback planning.</li>
+<li>Supported a product-line transition involving catalog identity, component modeling, pricing, drawings, indexing, and administrative tooling.</li>
+<li>Modernized CI/CD and test workflows, including Playwright-based regression coverage; codified engineering standards in a CLAUDE.md reference guide.</li>
 </ul>
-<h2>Professional experience</h2>
-<h3>MIRATECH <span class="muted">· April 2025–Present</span></h3>
-<p>Software Developer III (official title) · Enterprise application modernization and architecture</p>
-<ul><li>Implemented Azure delivery foundations, container and configuration improvements, and automated test coverage.</li><li>Developed domain-oriented workflow and rules functionality through the API, persistence, UI, and tests.</li><li>Facilitated DDD learning sessions and helped shape coding and architecture standards for future development.</li></ul>
-<h3>IXOPAY <span class="muted">· June 2021–April 2025</span></h3>
-<p>Senior Software Engineer · Payments platform engineering</p>
-<ul><li>Designed and delivered containerized payments-related microservices, including account updating for expiring and replaced cards.</li><li>Worked on resilient integration and distributed processing in business-critical systems.</li></ul>
-<p class="muted">Earlier engineering experience includes distributed web-hosting management, service automation, and full-stack platform modernization. Additional employers and dates are available in the full career history.</p>
-<h2>Technical focus</h2>
-<p><strong>Backend:</strong> C#, .NET, ASP.NET Core, Web API, MVC, Blazor, DDD, CQRS, Clean Architecture, event-driven systems.</p>
-<p><strong>Cloud and delivery:</strong> Azure App Service, Azure Service Bus, Key Vault, App Configuration, containers, Azure Pipelines, GitHub Actions, observability.</p>
-<p><strong>Frontend and data:</strong> React, TypeScript, JavaScript, React Native/Expo, SQL Server, PostgreSQL, MySQL, MongoDB, Cosmos DB, database performance tuning.</p>
-<p><strong>Engineering quality:</strong> xUnit, NUnit, Playwright, Cypress, code and architecture review, automated delivery.</p>
-<h2>Selected work and writing</h2>
-<p><a href="/work">Engineering case studies</a> · <a href="/projects">Independent products</a> · <a href="/writing">Architecture writing</a></p>
-<p class="muted">This is a concise public résumé. It intentionally omits some earlier employment details rather than inventing dates or responsibilities.</p>
+<h3>IXOPAY <span>June 2021–April 2025</span></h3><p class="role">Senior Software Engineer</p><ul>
+<li>Built payment-related microservices including a containerized Card Account Updater to address subscription churn caused by expiring payment credentials.</li>
+<li>Engineered asynchronous API usage telemetry with Azure Service Bus and a 99.9% delivery SLA for billing-related data.</li>
+<li>Introduced integration-test infrastructure and secure runtime configuration patterns across cloud services.</li>
+</ul>
+<h3>MissGroup / Hostek <span>January 2014–June 2021</span></h3><p class="role">Software Engineer</p><ul>
+<li>Rebuilt web-hosting management workflows with .NET Web APIs, React, and an orchestration/gateway layer.</li>
+<li>Designed remote infrastructure and deployment tooling operating across 2,000+ Windows servers, including IIS, firewall, certificate, and service management.</li>
+<li>Built secure credential management and remote access functionality supporting controlled sharing.</li>
+</ul></section>
+<section><h2>Technical breadth</h2><p><strong>Backend and architecture:</strong> C#, .NET, ASP.NET Core, MVC, DDD, CQRS, Clean Architecture, event-driven design, microservices and modular monoliths.</p><p><strong>Cloud and platform:</strong> Azure App Service, Azure Service Bus, Key Vault, App Configuration, Docker, Azure DevOps, GitHub Actions, observability.</p><p><strong>Product and data:</strong> React, TypeScript, React Native/Expo, SQL Server, PostgreSQL, MySQL, MongoDB, Cosmos DB, query/index tuning, Playwright and xUnit.</p></section>
+<section><h2>Independent products and certification</h2><p><strong>Pathway:</strong> software engineering education platform · <strong>Theoria:</strong> interactive music education platform. See <a href="/projects">project walkthroughs</a>.</p><p><strong>Certified Scrum Developer</strong> — Scrum Alliance</p></section>
 </main>
+<script>document.getElementById('print-resume')?.addEventListener('click',()=>window.print());</script>
 <style>
-@media print {
-  @page {size:letter; margin:0.55in}
-  :global(body){background:#fff!important;color:#111!important;font-size:10pt!important;line-height:1.3!important}
-  :global(.site-header), :global(.site-footer), :global(.no-print){display:none!important}
-  :global(.page-shell main){padding:0!important;width:100%!important;margin:0!important}
-  :global(.resume-print h1){font-size:26pt!important;color:#111!important}
-  :global(.resume-print h2){font-size:13pt!important;color:#111!important;margin:15px 0 6px!important}
-  :global(.resume-print h3){font-size:11pt!important;color:#111!important}
-  :global(.resume-print p), :global(.resume-print li), :global(.resume-print .lead), :global(.resume-print .muted){color:#111!important;font-size:10pt!important;line-height:1.3!important}
-  :global(.resume-print a){color:#111!important;text-decoration:underline!important}
-  :global(.resume-print .eyebrow){color:#333!important}
-  :global(.resume-print li){margin:3px 0!important}
-  :global(.resume-print h2), :global(.resume-print h3){break-after:avoid}
-}
+.resume-page{max-width:860px!important;color:var(--text);padding-top:32px!important}.resume-toolbar{display:flex;align-items:center;justify-content:space-between}.resume-heading{border-bottom:2px solid var(--accent);margin-top:20px}.resume-heading h1{font-size:2.8rem;margin-bottom:0}.resume-heading p{margin:.35rem 0}.resume-page section{margin:25px 0}.resume-page h2{font-size:1.25rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line);padding-bottom:5px}.resume-page h3{font-size:1.1rem;margin:18px 0 0}.resume-page h3 span{float:right;font-weight:400;font-size:.85rem;color:var(--muted)}.resume-page p,.resume-page li{font-size:.93rem;line-height:1.5}.resume-page ul{padding-left:20px}.resume-page a{text-decoration:underline}.role{margin:0;color:var(--muted)}@media print{@page{size:letter;margin:.5in}html,body{background:#fff!important;color:#111!important;color-scheme:light!important}.site-header,.site-footer,.resume-toolbar{display:none!important}.page-shell main{width:100%;padding:0!important}.resume-page,.resume-page *{color:#111!important;box-shadow:none!important}.resume-page{max-width:none!important}.resume-page section{margin:14px 0;break-inside:avoid}.resume-page h1{font-size:26pt}.resume-page h2{font-size:12pt;border-color:#666}.resume-page h3{font-size:10.5pt}.resume-page p,.resume-page li{font-size:9.5pt;line-height:1.32}.resume-page ul{margin:5px 0}.resume-page a{text-decoration:none}.resume-heading{border-color:#555}.resume-page h3 span{color:#333!important}}
 </style>
 </Layout>

@@ -25,3 +25,15 @@ B --> S[Isolated per-submission sandbox]
 <h2>Quality and operational approach</h2><p>The repository documents Playwright smoke coverage for a guest learner loading and interacting with lessons, as well as deployment runbooks and staging checks. These statements describe documented design and tests, not independently measured availability or adoption.</p>
 <p><a href="https://github.com/conorbrown-dev/pathway/blob/main/README.md">Read the project's architecture and setup documentation ↗</a></p>
 </main></Layout>
+<script>
+import mermaid from 'mermaid';
+mermaid.initialize({ startOnLoad: false, theme: 'dark', flowchart: { useMaxWidth: true, htmlLabels: false } });
+const diagrams = [...document.querySelectorAll('pre.mermaid')];
+for (const node of diagrams) {
+  const diagram = document.createElement('div');
+  diagram.className = 'mermaid';
+  diagram.textContent = node.textContent;
+  node.replaceWith(diagram);
+}
+if (diagrams.length) await mermaid.run({ querySelector: '.mermaid' });
+</script>

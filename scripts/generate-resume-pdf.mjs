@@ -12,7 +12,8 @@ await mkdir(resolve('public'), { recursive: true });
 
 const preview = spawn('npm', ['run', 'preview', '--', '--host', '127.0.0.1', '--port', PORT], {
   stdio: ['ignore', 'pipe', 'pipe'],
-  env: process.env
+  env: process.env,
+  detached: true
 });
 preview.stdout.on('data', bytes => process.stdout.write(bytes));
 preview.stderr.on('data', bytes => process.stderr.write(bytes));
@@ -46,5 +47,6 @@ try {
   console.log(`Generated résumé: ${outputPath} (${file.size} bytes)`);
 } finally {
   if (browser) await browser.close();
-  preview.kill('SIGTERM');
+  try { process.kill(-preview.pid, 'SIGTERM'); } catch { preview.kill('SIGTERM'); }
+  preview.stdout.destroy(); preview.stderr.destroy();
 }

@@ -15,7 +15,7 @@ export const getStaticPaths = async () => {
 const { Content, frontmatter } = Astro.props;
 ---
 
-<Layout title={frontmatter.title}>
+<Layout title={frontmatter.title} description={frontmatter.description}>
 	<main class="post">
 		<a class="text-[var(--ink)] no-underline" href="/writing">← All writing</a>
 		<article class="mt-12 rounded-[1.25rem] border border-white/30 bg-white/[.07] p-[clamp(1.5rem,5vw,4rem)] shadow-[0_1.5rem_4rem_rgba(0,0,0,.1)] backdrop-blur-xl backdrop-saturate-[120%]">

@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Career Desk — Application Workflow Architecture | Conor Brown" description="A free-first career workspace with private application tracking, versioned PDFs, PostgreSQL ownership boundaries, and a scoped ChatGPT workflow connection.">
+<main class="article">
+<p class="eyebrow">Project walkthrough · Workflow architecture</p>
+<h1>Career Desk</h1>
+<p class="lead">A career workspace that keeps job fit, application documents, and progress together—with assistance for preparation and a human decision before submission.</p>
+<div class="actions"><a class="button primary" href="https://career-desk-phi.vercel.app/demo">Explore the fictional demo ↗</a><a class="button" href="https://career-desk-phi.vercel.app/about">Product &amp; privacy ↗</a><a class="button" href="/projects">All projects</a></div>
+<p class="note">Working private pilot. The public demo uses fictional records and resets on reload. Account registration is invitation-only; source code is currently private.</p>
+
+<h2>The problem behind the product</h2>
+<p>A job search creates a small information system: eligibility rules, changing postings, company research, multiple versions of a résumé, cover letters, submission confirmations, and follow-ups. When these live across tabs and conversations, it becomes difficult to know what was prepared, what was actually sent, and which claims are supported by experience.</p>
+<p>Career Desk gives each opportunity a persistent record, links its documents to that record, and separates preparation from confirmed submission. A profile holds search criteria and an evidence inventory so location, compensation, education requirements, and experience gaps remain visible throughout the workflow.</p>
+
+<h2>Application and data boundaries</h2>
+<ul>
+<li><strong>Interface and API:</strong> Next.js App Router, React, TypeScript, and Tailwind CSS, deployed on Vercel.</li>
+<li><strong>Identity:</strong> Better Auth with email/password sessions and invitation-restricted registration.</li>
+<li><strong>Persistence:</strong> Neon PostgreSQL with server-derived account ownership on application, profile, activity, and document queries.</li>
+<li><strong>Documents:</strong> version metadata and PDF bytes stored together in PostgreSQL for the pilot, with authenticated downloads and account-scoped export.</li>
+</ul>
+<p>The browser cannot select another account by supplying an owner ID. Document writes check ownership, enforce storage limits, and save PDF bytes and application metadata in one transaction. A per-account advisory lock serializes document writes so concurrent uploads cannot independently pass the same quota check.</p>
+
+<h2>Assistance with explicit limits</h2>
+<p>The private pilot connects an existing ChatGPT Work task through a separate, owner-scoped bearer credential. The task reads current criteria and evidence, researches postings, prepares documents, and records its work through a narrow API. This connection does not use a ChatGPT password or turn the web app into an independent AI service.</p>
+<p>The API permits preparation stages and requires saved résumé and cover letter records before an application can become ready for review. It rejects changes to submitted or interview-stage applications. Employer submissions, agreements, and demographic answers remain human decisions.</p>
+
+<h2>Keeping the pilot affordable</h2>
+<p>The product is intended to remain free while operating costs are manageable. The pilot limits each account to 250 tracked applications, 40 PDFs, 2 MB per file, and 25 MB of document storage. Storing small PDFs in PostgreSQL keeps the initial infrastructure simple; separate object storage remains an option if measured usage justifies it. The app itself has no paid model API dependency.</p>
+
+<h2>Verification and migration</h2>
+<p>Automated checks exercise account isolation, normalized posting URL deduplication, confirmed-submission rules, and the automation permission boundary. Checks against deployed PostgreSQL verify persistence, PDF round trips, and export. The migration from the original private prototype ran atomically and compared saved PDF bytes with the originals. Authenticated API write/read-back and private PDF downloads were also verified.</p>
+<p>The daily task is configured to use the new workspace. Its first scheduled execution against the new deployment remains unverified. Broader self-service onboarding, password-recovery email, and a reusable connection flow for other users are further work; the current pilot does not claim universal automatic application submission.</p>
+</main>
+</Layout>
